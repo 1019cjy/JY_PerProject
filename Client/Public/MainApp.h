@@ -30,6 +30,9 @@ private:
 	HRESULT Open_Level(LEVEL eStartLevelID);
 	HRESULT Ready_Prototype_Component_ForStaticLevel();
 
+private:
+	HRESULT Ready_Gara();
+
 public:
 	static CMainApp* Create();
 	virtual void Free();

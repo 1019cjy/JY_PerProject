@@ -2,13 +2,23 @@
 
 #pragma warning(disable : 4251)
 
+namespace Engine
+{
+	enum MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB, DIM_END };
+	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
+}
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
 #include "Effects11\d3dx11effect.h"
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
+#include "DirectXTK\ScreenGrab.h"
 
 #include <d3dcompiler.h>
 

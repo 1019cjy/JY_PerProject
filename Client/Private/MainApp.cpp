@@ -28,7 +28,10 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iBackBufferSizeX = g_iWinSizeX;
 	GraphicDesc.iBackBufferSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, g_hInst, GraphicDesc, &m_pDevice, &m_pContext)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Gara()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Prototype_Component_ForStaticLevel()))
@@ -82,6 +85,81 @@ HRESULT CMainApp::Ready_Prototype_Component_ForStaticLevel()
 	/* For.Prototype_Component_Shader_VtxPosTex*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Gara()
+{
+	/* 텍스쳐를 생성해보자. */
+	ID3D11Texture2D*		pTexture2D = { nullptr };
+
+	D3D11_TEXTURE2D_DESC	TextureDesc = {};
+
+	TextureDesc.Width = 1024;
+	TextureDesc.Height = 1024;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DYNAMIC;
+	TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	TextureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	TextureDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA		InitialData = {};
+
+	_uint*		pPixels = new _uint[TextureDesc.Width * TextureDesc.Height];
+
+	for (size_t i = 0; i < TextureDesc.Height; i++)
+	{
+		for (size_t j = 0; j < TextureDesc.Width; j++)
+		{
+			_uint		iIndex = i * TextureDesc.Width + j;
+
+			pPixels[iIndex] = D3DCOLOR_ARGB(255, 0, 0, 0);
+		}
+	}
+
+
+	InitialData.pSysMem = pPixels;
+	InitialData.SysMemPitch = TextureDesc.Width * 4;
+
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &pTexture2D)))
+		return E_FAIL;
+
+	/*pPixels[0] = D3DCOLOR_ARGB(255, 255, 0, 0);*/
+
+	for (size_t i = 0; i < TextureDesc.Height; i++)
+	{
+		for (size_t j = 0; j < TextureDesc.Width; j++)
+		{
+			_uint		iIndex = i * TextureDesc.Width + j;
+
+			if(j < TextureDesc.Width * 0.5f)
+				pPixels[iIndex] = D3DCOLOR_ARGB(255, 0, 0, 0);
+			else
+				pPixels[iIndex] = D3DCOLOR_ARGB(255, 255, 255, 255);
+		}
+	}
+
+	/* 텍스쳐의 픽셀정보를 내 마음대로 조절해서 */
+	D3D11_MAPPED_SUBRESOURCE		MappedSubResource = {};
+
+	m_pContext->Map(pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubResource);
+
+	memcpy(MappedSubResource.pData, pPixels, sizeof(_uint) * TextureDesc.Width * TextureDesc.Height);
+
+	m_pContext->Unmap(pTexture2D, 0);
+	
+
+	/* 다시 파일로 저장하기위해서. */
+	if (FAILED(SaveDDSTextureToFile(m_pContext, pTexture2D, TEXT("../Bin/Resources/Textures/Terrain/MyMask.dds"))))
 		return E_FAIL;
 
 	return S_OK;

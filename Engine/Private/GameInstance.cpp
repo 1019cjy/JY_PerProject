@@ -1,5 +1,6 @@
 #include "..\Public\GameInstance.h"
 #include "Graphic_Device.h"
+#include "Input_Device.h"
 #include "TImer_Manager.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
@@ -11,12 +12,16 @@ CGameInstance::CGameInstance()
 {
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInstance, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
 {
 	/* 그래픽 디바이스를 초기화 하자.*/
 	m_pGraphic_Device = CGraphic_Device::Create(GraphicDesc, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;	
+
+	m_pInput_Device = CInput_Device::Create(hInstance, GraphicDesc.hWnd);
+	if (nullptr == m_pInput_Device)
+		return E_FAIL;
 
 	/* 타이머를 사용할 준비를 하자. */
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -51,8 +56,11 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	if (nullptr == m_pLevel_Manager || 
 		nullptr == m_pObject_Manager || 
-		nullptr == m_pPipeLine)
+		nullptr == m_pPipeLine || 
+		nullptr == m_pInput_Device)
 		return;
+
+	m_pInput_Device->Update_InputDev();
 
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 	
@@ -115,6 +123,29 @@ HRESULT CGameInstance::Present()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 	return m_pGraphic_Device->Present();
+}
+
+_byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;	
+	return m_pInput_Device->Get_DIKeyState(byKeyID);
+}
+
+_byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
+{
+
+	if (nullptr == m_pInput_Device)
+		return 0;
+	return m_pInput_Device->Get_DIMouseState(eMouse);
+}
+
+_long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 }
 
 HRESULT CGameInstance::Add_Timer(const wstring & strTimeTag)
@@ -245,6 +276,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 }
 

@@ -1,6 +1,6 @@
 d:\정의훈\139\framework\engine\default\x64\debug\vc140.pdb
 d:\정의훈\139\framework\engine\default\x64\debug\vc140.idb
-d:\정의훈\139\framework\engine\default\x64\debug\base.obj
+d:\정의훈\139\framework\engine\default\x64\debug\camera.obj
 d:\정의훈\139\framework\engine\default\x64\debug\component.obj
 d:\정의훈\139\framework\engine\default\x64\debug\component_manager.obj
 d:\정의훈\139\framework\engine\default\x64\debug\gameinstance.obj
@@ -18,9 +18,11 @@ d:\정의훈\139\framework\engine\default\x64\debug\timer_manager.obj
 d:\정의훈\139\framework\engine\default\x64\debug\transform.obj
 d:\정의훈\139\framework\engine\default\x64\debug\vibuffer.obj
 d:\정의훈\139\framework\engine\default\x64\debug\vibuffer_rect.obj
-d:\정의훈\139\framework\engine\default\x64\debug\engine_struct.obj
 d:\정의훈\139\framework\engine\default\x64\debug\vibuffer_terrain.obj
-d:\정의훈\139\framework\engine\default\x64\debug\camera.obj
+d:\정의훈\139\framework\engine\default\x64\debug\engine_struct.obj
+d:\정의훈\139\framework\engine\default\x64\debug\base.obj
+d:\정의훈\139\framework\engine\default\x64\debug\pipeline.obj
+d:\정의훈\139\framework\engine\default\x64\debug\input_device.obj
 d:\정의훈\139\framework\engine\bin\engine.lib
 d:\정의훈\139\framework\engine\bin\engine.exp
 d:\정의훈\139\framework\engine\bin\engine.ilk

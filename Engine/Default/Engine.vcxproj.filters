@@ -82,9 +82,6 @@
     <Filter Include="01.Utility\04.PipeLine">
       <UniqueIdentifier>{47ae88bb-0602-4428-82d6-a08502ca7ede}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Components\01.VIBuffer\Cube">
-      <UniqueIdentifier>{efc8ba70-41be-4677-8628-0f6b89bebaf7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -165,8 +162,8 @@
     <ClInclude Include="..\public\PipeLine.h">
       <Filter>01.Utility\04.PipeLine</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_Cube.h">
-      <Filter>01.Utility\03.Components\01.VIBuffer\Cube</Filter>
+    <ClInclude Include="..\Public\Input_Device.h">
+      <Filter>00.System\00.Device\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,8 +233,8 @@
     <ClCompile Include="..\private\PipeLine.cpp">
       <Filter>01.Utility\04.PipeLine</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
-      <Filter>01.Utility\03.Components\01.VIBuffer\Cube</Filter>
+    <ClCompile Include="..\Private\Input_Device.cpp">
+      <Filter>00.System\00.Device\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

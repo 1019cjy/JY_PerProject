@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "Transform.h"
 #include "VIBuffer_Rect.h"
-#include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
 
 /* 원형 컴포넌트들을 레벨별로 보관한다. */

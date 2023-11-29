@@ -23,6 +23,7 @@ public:
 	HRESULT Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrices);
 	HRESULT Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV);
 	HRESULT Bind_SRVs(const _char* pConstantName, ID3D11ShaderResourceView** ppSRV, _uint iNumTextures);
+	HRESULT Bind_RawValue(const _char* pConstantName, const void* pData, _uint iSize);
 
 
 private:
